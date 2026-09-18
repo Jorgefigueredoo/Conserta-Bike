@@ -4,21 +4,22 @@ import Icone from "./ui/Icones";
 import { loja, linkWhatsapp } from "../data/loja";
 
 export default function Localizacao() {
-  const { endereco, horario } = loja;
+  const { endereco, coordenadas } = loja;
 
   return (
     <section id="localizacao" className="relative bg-white py-24 sm:py-32">
       <div className="mx-auto max-w-6xl px-5 sm:px-8">
+        {/* Entrada da seção em tipo monoespaçado, como uma ficha de endereço */}
         <div className="mb-12 max-w-2xl">
           <Reveal direcao="cima">
-            <span className="inline-flex items-center gap-2 rounded-full bg-lima-500/15 px-4 py-1.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-lima-700">
-              <span className="h-1.5 w-1.5 rounded-full bg-lima-500" />
-              Onde estamos
-            </span>
+            <p className="flex items-center gap-3 font-mono text-[0.7rem] uppercase tracking-[0.3em] text-tinta/40">
+              <span className="h-px w-8 bg-tinta/25" />
+              06 / {coordenadas.gms}
+            </p>
           </Reveal>
 
           <Reveal direcao="cima" atraso={0.08}>
-            <h2 className="mt-6 font-display text-[clamp(2.1rem,5.6vw,3.6rem)] font-extrabold leading-[1.02] tracking-[-0.035em] text-tinta">
+            <h2 className="mt-5 font-display text-[clamp(2.1rem,5.6vw,3.6rem)] font-extrabold leading-[1.02] tracking-[-0.035em] text-tinta">
               Na Estrada de Aldeia,{" "}
               <span className="text-lima-600">fácil de chegar.</span>
             </h2>
@@ -48,45 +49,37 @@ export default function Localizacao() {
                   </div>
                 </div>
 
-                {/* HORÁRIOS — editáveis em src/data/loja.js */}
+                {/* Os pontos de referência substituem a lista de dias,
+                    que agora tem seção própria ("A semana na oficina"). */}
                 <div className="mt-9 border-t border-white/10 pt-8">
-                  <div className="flex items-center gap-3">
-                    <Icone.relogio className="h-5 w-5 text-lima-500" />
-                    <p className="font-display text-xs font-bold uppercase tracking-[0.2em] text-lima-400">
-                      Horário de funcionamento
+                  <p className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-lima-400">
+                    Coordenadas exatas
+                  </p>
+                  <p className="mt-2 font-display text-lg font-bold tracking-tight text-white">
+                    {coordenadas.gms}
+                  </p>
+                  <p className="mt-1 font-mono text-xs text-white/40">
+                    {coordenadas.lat}, {coordenadas.lng}
+                  </p>
+
+                  <div className="mt-7 flex items-center gap-3 border-t border-white/10 pt-6">
+                    <Icone.relogio className="h-5 w-5 shrink-0 text-lima-500" />
+                    <p className="text-sm text-white/60">
+                      {loja.horario.resumo} —{" "}
+                      <a
+                        href="#horarios"
+                        className="font-display font-bold text-white underline decoration-lima-500 decoration-2 underline-offset-4"
+                      >
+                        ver a semana inteira
+                      </a>
                     </p>
                   </div>
-
-                  <ul className="mt-4 space-y-1.5">
-                    {horario.dias.map((d) => {
-                      const fechado = /fechad/i.test(d.horas);
-                      return (
-                        <li
-                          key={d.dia}
-                          className="flex items-baseline justify-between gap-4 text-[0.95rem]"
-                        >
-                          <span className="text-white/60">{d.dia}</span>
-                          <span
-                            aria-hidden="true"
-                            className="mx-1 h-px grow border-b border-dashed border-white/15"
-                          />
-                          <span
-                            className={`font-display font-bold tabular-nums ${
-                              fechado ? "text-white/35" : "text-white"
-                            }`}
-                          >
-                            {d.horas}
-                          </span>
-                        </li>
-                      );
-                    })}
-                  </ul>
                 </div>
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Botao
-                  href={loja.mapaLink}
+                  href={loja.mapaRotaLink}
                   variante="verde"
                   className="flex-1"
                   icone={<Icone.pin className="h-5 w-5" />}

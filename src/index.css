@@ -75,9 +75,47 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
 }
 
+/* Texto vazado (só contorno).
+   A cor do traço vem da variável --cor-contorno, NUNCA de currentColor:
+   como estas classes zeram `color`, currentColor resolveria para
+   transparente e o contorno sumiria. Defina a cor no próprio elemento:
+   style={{ "--cor-contorno": "rgba(255,255,255,.12)" }} */
 .texto-contorno {
-  -webkit-text-stroke: 2px currentColor;
   color: transparent;
+  -webkit-text-stroke: 2px var(--cor-contorno, #0b0c0a);
+}
+
+/* Para numerais muito grandes: traço de 2px vira fio de cabelo */
+.texto-contorno-grosso {
+  color: transparent;
+  -webkit-text-stroke: 7px var(--cor-contorno, #0b0c0a);
+}
+
+/* Trilho horizontal sem barra de rolagem visível (seção de serviços) */
+.sem-barra-rolagem {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.sem-barra-rolagem::-webkit-scrollbar {
+  display: none;
+}
+
+/* Molduras de foto fora do padrão "quadrado ou círculo".
+   `recorte-folha` é assimétrica; `recorte-organico` é um blob suave. */
+.recorte-folha {
+  border-radius: 5.5rem 0.9rem 5.5rem 0.9rem;
+}
+.recorte-folha-alt {
+  border-radius: 0.9rem 5.5rem 0.9rem 5.5rem;
+}
+.recorte-organico {
+  border-radius: 58% 42% 46% 54% / 46% 52% 48% 54%;
+}
+
+/* Rótulo girado usado no lugar das antigas "pílulas" de seção */
+.rotulo-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
 
 /* Respeita quem prefere menos movimento */

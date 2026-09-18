@@ -8,6 +8,7 @@ import { suave } from "../hooks/useAnimacoes";
 
 const links = [
   { rotulo: "A Loja", href: "#sobre" },
+  { rotulo: "Horários", href: "#horarios" },
   { rotulo: "Serviços", href: "#servicos" },
   { rotulo: "Avaliações", href: "#avaliacoes" },
   { rotulo: "Localização", href: "#localizacao" },

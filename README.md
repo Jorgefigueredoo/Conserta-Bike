@@ -22,20 +22,17 @@ npm run preview   # confere o resultado do build
 
 ---
 
-## ⚠️ Passo que falta: a foto da fachada
+## 📷 A foto do site
 
-Salve a foto da fachada da loja como:
+O site usa **uma única foto**: a fachada da loja, já em
+`public/images/fachada.jpg`. Todo o resto é tipografia e dado real — nada de
+banco de imagens, que é justamente o que faz um site parecer template.
 
-```
-public/images/fachada.jpg
-```
+Para trocá-la, substitua o arquivo mantendo o mesmo nome. Se ele sumir, aparece
+um espaço reservado e o site não quebra. O manifesto fica em
+[src/data/fotos.js](src/data/fotos.js).
 
-Ela aparece automaticamente na seção **A Loja**. Enquanto o arquivo não existir,
-um espaço reservado verde é mostrado no lugar (o site não quebra).
-
-> Dica: use uma imagem de no máximo ~400 KB (JPG, largura de 1200–1600px) para
-> não pesar no 4G. Se quiser, o mesmo arquivo já está referenciado como imagem
-> de compartilhamento no WhatsApp/Instagram (`og:image` no `index.html`).
+> Dica: JPG, 1400–1800px no lado maior, até ~400 KB.
 
 A **logo** não precisa de arquivo: ela foi reconstruída em vetor (SVG) em
 [src/components/ui/Logo.jsx](src/components/ui/Logo.jsx) e também serve de
@@ -54,11 +51,13 @@ tamanho de tela.
 | Telefone / WhatsApp | `loja.telefone` e `loja.whatsapp` |
 | Instagram | `loja.instagram` |
 | Endereço e CEP | `loja.endereco` |
-| Link do "Como chegar" | `loja.mapaLink` |
+| Link do "Como chegar" | `loja.mapaRotaLink` (rota) e `loja.mapaLink` (perfil) |
+| Coordenadas | `loja.coordenadas` — já nas exatas da loja (-7.9454582, -35.0228957) |
 | Mapa incorporado | `loja.mapaEmbed` (Google Maps → Compartilhar → Incorporar um mapa → copiar o `src`) |
 | Textos institucionais | `loja.textoInstitucional` e `loja.slogan` |
-| Cards de serviços | lista `servicos` |
-| Marcas parceiras | lista `marcas` |
+| Cards de serviços | lista `servicos` — `texto`, `itens` (as etiquetas) e `detalhe` |
+| **Prazo / preço / garantia** | `detalhe` de cada serviço. Está **vazio de propósito**: só a loja sabe esses números. Enquanto vazio, a faixa simplesmente não aparece no card |
+| Marcas parceiras | lista `marcas` — `nome` e `papel` (o que a loja usa de cada uma) |
 | Depoimentos | lista `depoimentos` |
 
 **Cores da marca:** [src/index.css](src/index.css), no bloco `@theme`.
@@ -75,19 +74,35 @@ Mudou ali, muda no site inteiro.
 ```
 src/
 ├── data/loja.js              ← TODAS as informações da loja
+├── data/fotos.js             ← nomes dos arquivos de foto e onde cada um entra
 ├── hooks/useAnimacoes.js     ← curvas de animação + desliga parallax no mobile
 ├── components/
 │   ├── Cabecalho.jsx         menu fixo + menu mobile
 │   ├── Hero.jsx              1. abertura com parallax
-│   ├── Sobre.jsx             2. a loja + foto da fachada
-│   ├── Servicos.jsx          3. os 6 cards de serviços
-│   ├── Marcas.jsx            4. faixas de marcas em movimento
-│   ├── Avaliacoes.jsx        5. nota 5,0 + depoimentos
-│   ├── Localizacao.jsx       6. endereço, horários e mapa
-│   ├── Rodape.jsx            7. CTA final + contatos
-│   └── ui/                   peças reutilizáveis (botão, logo, ícones…)
-└── index.css                 cores, fontes e animações base
+│   ├── Sobre.jsx             2. a loja + foto da fachada (rótulo girado)
+│   ├── Horarios.jsx          3. ficha da semana + selo "aberto agora"
+│   ├── Servicos.jsx          4. trilho horizontal, cards tipográficos
+│   ├── Marcas.jsx            5. as 6 marcas e o papel de cada uma
+│   ├── Avaliacoes.jsx        6. tela cheia com a nota vazada ao fundo
+│   ├── Localizacao.jsx       7. endereço, coordenadas e mapa
+│   ├── Rodape.jsx            8. CTA final + contatos
+│   └── ui/                   peças reutilizáveis (Foto, Botao, Logo, Icones…)
+└── index.css                 cores, fontes, molduras e animações base
 ```
+
+---
+
+## "Aberto agora"
+
+A seção **Horários** mostra um selo que diz, no relógio de quem está visitando,
+se a loja está aberta neste momento ("Aberto agora", "Fecha em 20 min",
+"Fechado — abre Sáb, 08h"). Ele é calculado a partir da própria tabela
+`loja.horario.dias` — por isso cada dia tem `abre`/`fecha` em número, além do
+texto exibido. Mudou o horário na tabela, o selo acompanha.
+
+A lógica está em `situacaoAgora()` no fim de
+[src/data/loja.js](src/data/loja.js). **Mantenha a lista começando na segunda e
+terminando no domingo** — o cálculo depende dessa ordem.
 
 ---
 

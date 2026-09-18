@@ -1,17 +1,11 @@
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import Reveal, { TituloRevelado } from "./ui/Reveal";
-import ImagemFachada from "./ui/ImagemFachada";
+import Foto from "./ui/Foto";
 import Icone from "./ui/Icones";
 import Botao from "./ui/Botao";
-import { loja, linkWhatsapp } from "../data/loja";
+import { loja, marcas, linkWhatsapp } from "../data/loja";
 import { suave, useParallaxAtivo } from "../hooks/useAnimacoes";
-
-const numeros = [
-  { valor: "5,0", rotulo: "Nota no Google" },
-  { valor: "100%", rotulo: "Serviço com garantia" },
-  { valor: "6+", rotulo: "Marcas parceiras" },
-];
 
 export default function Sobre() {
   const secao = useRef(null);
@@ -58,7 +52,7 @@ export default function Sobre() {
             className="relative aspect-4/5 overflow-hidden rounded-[2rem] bg-tinta shadow-[0_40px_80px_-40px_rgba(11,12,10,.6)] sm:aspect-4/3 lg:aspect-4/5"
           >
             <motion.div style={{ y: yFoto, scale: escalaFoto }} className="h-full w-full">
-              <ImagemFachada className="h-full w-full object-cover" />
+              <Foto slot="fachada" className="h-full w-full object-cover" />
             </motion.div>
 
             {/* Degradê para o texto do canto respirar */}
@@ -105,18 +99,25 @@ export default function Sobre() {
         </div>
 
         {/* ---------------- TEXTO ---------------- */}
-        <div>
-          <Reveal direcao="cima">
-            <span className="inline-flex items-center gap-2 rounded-full bg-lima-500/15 px-4 py-1.5 font-display text-xs font-bold uppercase tracking-[0.2em] text-lima-700">
-              <span className="h-1.5 w-1.5 rounded-full bg-lima-500" />
-              A loja
+        {/* Entrada da seção: rótulo girado na lateral, no lugar da antiga pílula */}
+        <div className="relative lg:pl-14">
+          <Reveal
+            direcao="baixo"
+            className="absolute -left-1 top-1 hidden lg:block"
+          >
+            <span className="rotulo-vertical font-mono text-[0.7rem] uppercase tracking-[0.3em] text-tinta/35">
+              01 — {loja.endereco.logradouro}, {loja.endereco.numero}
             </span>
           </Reveal>
+
+          <span className="mb-5 block font-mono text-[0.7rem] uppercase tracking-[0.22em] text-tinta/35 lg:hidden">
+            01 — {loja.endereco.logradouro}, {loja.endereco.numero}
+          </span>
 
           <TituloRevelado
             texto="Somos apaixonados por bikes."
             destaque={[2, 3]}
-            className="mt-6 font-display text-[clamp(2.1rem,5.4vw,3.6rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-tinta"
+            className="font-display text-[clamp(2.1rem,5.4vw,3.6rem)] font-extrabold leading-[1.02] tracking-[-0.03em] text-tinta"
           />
 
           <div className="mt-7 space-y-5">
@@ -129,27 +130,45 @@ export default function Sobre() {
             ))}
           </div>
 
-          <Reveal direcao="cima" atraso={0.3}>
-            <p className="mt-7 border-l-4 border-lima-500 pl-5 font-display text-xl font-bold leading-snug tracking-tight text-tinta sm:text-2xl">
+          {/* Dados de bairro, não métrica de painel: onde fica e com o que
+              a loja realmente trabalha, marca por marca. */}
+          <Reveal direcao="cima" atraso={0.28}>
+            <dl className="mt-9 space-y-5 border-t border-tinta/10 pt-8">
+              <div>
+                <dt className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-tinta/40">
+                  No bairro
+                </dt>
+                <dd className="mt-1.5 font-display text-lg font-bold leading-snug tracking-tight text-tinta">
+                  {loja.endereco.bairro}, em {loja.endereco.cidade} — na{" "}
+                  {loja.endereco.logradouro}, número {loja.endereco.numero}.
+                </dd>
+              </div>
+
+              <div>
+                <dt className="font-mono text-[0.68rem] uppercase tracking-[0.2em] text-tinta/40">
+                  Trabalhamos com
+                </dt>
+                <dd className="mt-1.5 flex flex-wrap gap-x-1.5 gap-y-2">
+                  {marcas.map((m, i) => (
+                    <span key={m.nome} className="font-display text-lg font-bold tracking-tight text-tinta">
+                      {m.nome.charAt(0) + m.nome.slice(1).toLowerCase()}
+                      {i < marcas.length - 1 && (
+                        <span className="text-lima-600">,</span>
+                      )}
+                    </span>
+                  ))}
+                </dd>
+              </div>
+            </dl>
+          </Reveal>
+
+          <Reveal direcao="cima" atraso={0.34}>
+            <p className="mt-9 border-l-4 border-lima-500 pl-5 font-display text-xl font-bold leading-snug tracking-tight text-tinta sm:text-2xl">
               “Não tem problema em bike que não resolvamos.”
             </p>
           </Reveal>
 
-          {/* Números */}
-          <div className="mt-10 grid grid-cols-3 gap-4 border-t border-tinta/10 pt-8">
-            {numeros.map((n, i) => (
-              <Reveal key={n.rotulo} direcao="cima" atraso={0.1 * i}>
-                <p className="font-display text-3xl font-extrabold tracking-tight text-tinta sm:text-4xl">
-                  {n.valor}
-                </p>
-                <p className="mt-1 text-xs font-medium leading-snug text-tinta/55 sm:text-sm">
-                  {n.rotulo}
-                </p>
-              </Reveal>
-            ))}
-          </div>
-
-          <Reveal direcao="cima" atraso={0.25} className="mt-9">
+          <Reveal direcao="cima" atraso={0.4} className="mt-9">
             <Botao
               href={linkWhatsapp("Olá! Quero falar com a oficina da ConsertaBike.")}
               variante="preto"

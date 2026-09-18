@@ -1,6 +1,7 @@
 import Cabecalho from "./components/Cabecalho";
 import Hero from "./components/Hero";
 import Sobre from "./components/Sobre";
+import Horarios from "./components/Horarios";
 import Servicos from "./components/Servicos";
 import Marcas from "./components/Marcas";
 import Avaliacoes from "./components/Avaliacoes";
@@ -18,6 +19,7 @@ export default function App() {
       <main>
         <Hero />
         <Sobre />
+        <Horarios />
         <Servicos />
         <Marcas />
         <Avaliacoes />
