@@ -1,0 +1,6 @@
+Coloque aqui a foto da fachada da loja com o nome exato:
+
+    fachada.jpg
+
+Ela aparece automaticamente na secao "A Loja" do site.
+Sugestao: JPG, 1200-1600px de largura, ate ~400 KB.
